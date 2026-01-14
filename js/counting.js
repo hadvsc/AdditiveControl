@@ -98,9 +98,9 @@ export function initCountingTab(container) {
 				render: (v, row) => {
 					const product = getBatchProduct(row.batch);
 					const badgeClass = product ? productBadgeClass(product) : "";
-
 					return `<span class="${badgeClass}">${product || "Desconhecido"}</span>`;
-				}
+				},
+				// validate: (v, row) => !!getBatchProduct(row.batch)
 			},
 			{
 				key: "expiration",

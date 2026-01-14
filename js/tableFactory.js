@@ -55,12 +55,24 @@ export class TableFactory {
 			const tr = document.createElement("tr");
 			const isEditing = this.editingIndexes[index] === index;
 
+			let canBeRendered = true;
+
+			this.columns.forEach(col => {
+				if (col.validate && !col.validate(row[col.key], row)) {
+					canBeRendered = false; // All columns must be valid to be rendered
+				}
+			});
+
+			if (!canBeRendered) return;
+
 			this.columns.forEach(col => {
 				const td = document.createElement("td");
 
 				let value = row[col.key] ?? "";
-				value = col.render ? col.render(value, row) : value
 
+				if(col.render) {
+					value = col.render(value, row);
+				}
 				if (isEditing && col.createEditElement) {
 					const element = col.createEditElement(row, v => {
 						console.log("edit", this.editBuffer, index, col.key, v);
