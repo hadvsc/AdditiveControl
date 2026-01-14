@@ -1,0 +1,65 @@
+body {
+	font-family: system-ui, Arial, sans-serif;
+	background: #f1f5f9;
+	padding: 20px;
+	margin: 0;
+}
+
+h1 {
+	text-align: center;
+}
+
+.tabs {
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	margin-bottom: 16px;
+}
+
+.tab {
+	padding: 10px 16px;
+	border: none;
+	border-radius: 8px;
+	background: #e5e7eb;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.tab.active {
+	background: #2563eb;
+	color: #fff;
+}
+
+.box {
+	background: #fff;
+	padding: 16px;
+	border-radius: 10px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, .08);
+}
+
+/* Modal */
+.modal {
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, .5);
+	justify-content: center;
+	align-items: center;
+}
+
+.modal.active {
+	display: flex;
+}
+
+.modal-content {
+	background: #fff;
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.modal-actions {
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	margin-top: 16px;
+}
