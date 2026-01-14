@@ -29,9 +29,16 @@ export async function initSpreadsheetTab(container) {
 			const batch = row.batch;
 
 			if (!batches[batch]) {
+				const expiration = getBatchExpiration(batch);
+				const product = getBatchProduct(batch);
+
+				if(!expiration || !product) {
+					console.error(`Lote ${batch} não encontrado`);
+					return;
+				}
 				batches[batch] = {
-					expiration: getBatchExpiration(batch),
-					product: getBatchProduct(batch),
+					expiration: expiration,
+					product: product,
 					totalML: 0
 				};
 			}
