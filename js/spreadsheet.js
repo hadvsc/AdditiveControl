@@ -20,7 +20,7 @@ export async function initSpreadsheetTab(container) {
 	const sheetContent = document.createElement("div");
 	sheetContainer.appendChild(sheetContent);
 
-	const file = await loadLocalFile("./sheet/model.xlsx");
+	const file = await loadLocalFile(new URL("./sheet/model.xlsx", document.baseURI));
 	const workbook = await editExcelFile(file, async (workbook) => {
 		const sheet = workbook.worksheets[0];
 		const batches = {};
