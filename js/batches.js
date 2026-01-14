@@ -6,16 +6,6 @@ import { formatMonthYear } from "./utils.js";
 
 const batches = loadBatches();
 
-function downloadJsonBatches() {
-	const json = JSON.stringify(batches, null, 2);
-	const blob = new Blob([json], { type: "application/json" });
-	const url = URL.createObjectURL(blob);
-	const a = document.createElement("a");
-	a.href = url;
-	a.download = "batches.json";
-	a.click();
-}
-
 export function batchExists(batch) {
 	return batch in batches;
 }

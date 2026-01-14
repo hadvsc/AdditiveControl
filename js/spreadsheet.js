@@ -1,8 +1,8 @@
 import { getBatchExpiration, getBatchProduct } from "./batches.js";
-import { dateToExcelSerial, downloadExcelFile, editExcelFile, excelSerialToDate, renderSheet, setCellValue } from "./excel-utils.js";
+import { downloadExcelFile, editExcelFile, renderSheet } from "./excel-utils.js";
 import { productCellColumn } from "./product_types.js";
 import { loadItems } from "./storage.js";
-import { formatNumber, loadLocalFile } from "./utils.js";
+import { loadLocalFile } from "./utils.js";
 
 export async function initSpreadsheetTab(container) {
 	const items = loadItems();

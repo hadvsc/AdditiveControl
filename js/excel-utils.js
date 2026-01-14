@@ -78,28 +78,6 @@ export async function recalculateSheet(sheet) {
 }
 
 /**
- * Altera o valor de uma célula Excel.
- * 
- * @param {ExcelJS.Cell} cell - Célula Excel que irá ter o valor alterado.
- * @param {string|number|Date|object} value - Novo valor da célula.
- * 
- * Se a célula for uma fórmula ou um valor com resultado, o valor do resultado será alterado.
- * Se a célula for um valor simples, o valor da célula será alterado.
- * 
- * @returns {undefined} - Nenhum valor é retornado.
- */
-export function setCellValue(cell, value) {
-	console.log(cell.address, cell.value);
-
-	if (cell.value && typeof cell.value === "object") {
-		if (cell !== cell.master) return;
-		cell.value.result = value;
-	} else {
-		cell.value = value;
-	}
-}
-
-/**
  * Converte uma data para um número serial Excel.
  *
  * @param {Date} date - Data a ser convertida.
