@@ -75,8 +75,6 @@ export class TableFactory {
 				}
 				if (isEditing && col.createEditElement) {
 					const element = col.createEditElement(row, v => {
-						console.log("edit", this.editBuffer, index, col.key, v);
-
 						if (!this.editBuffer[index]) {
 							this.editBuffer[index] = {};
 						}
@@ -107,13 +105,12 @@ export class TableFactory {
 					delBtn.className = "btn-cancel";
 
 					editBtn.onclick = async () => {
-						console.log("save", this.editBuffer, index);
 						const inputs = tr.querySelectorAll(".edit-input");
 
 						for (const input of inputs) {
 							if (!input.checkValidity()) {
 								input.reportValidity();
-								return; // bloqueia o save
+								return;
 							}
 						}
 						const updatedRow = {

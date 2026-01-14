@@ -250,8 +250,6 @@ function __excelSerialToDate(serial) {
 async function __recalcSheet(sheet) {
 	const sheetData = [];
 
-	console.log(sheet.dimensions);
-
 	for (let rowNum = 0; rowNum <= sheet.dimensions.bottom; rowNum++) {
 		const rowData = [];
 

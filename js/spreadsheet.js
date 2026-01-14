@@ -56,8 +56,6 @@ export async function initSpreadsheetTab(container) {
 		let row = 6;
 
 		for (const [batch, data] of orderedMap) {
-			console.log(parseUtcDate(data.expiration));
-
 			sheet.getCell("C" + row).value = Number(batch);
 			sheet.getCell("D" + row).value = parseUtcDate(data.expiration);
 
