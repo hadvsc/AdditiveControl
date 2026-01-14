@@ -1,0 +1,45 @@
+
+.excel-viewer .viewport {
+    transform-origin: top left;
+    display: inline-block;
+}
+
+/* Table */
+.excel-viewer table {
+    border-collapse: collapse;
+    background: #ffffff;
+    font-family: Calibri, Arial, sans-serif;
+    table-layout: auto; /* Tabela ajusta colunas ao conteúdo */
+    width: auto; /* Não força largura */
+    max-width: 100%; /* Evita overflow horizontal exagerado */
+}
+
+/* Cells */
+.excel-viewer th,
+.excel-viewer td {
+    padding: 3px 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* Ajuste para quebrar texto quando necessário */
+.excel-viewer td {
+    white-space: pre-wrap;
+    overflow: visible;
+    text-overflow: clip;
+    max-width: none; /* remove limite que criava scroll */
+}
+
+/* Headers */
+.excel-viewer th {
+    background: #f3f3f3;
+    font-weight: bold;
+    text-align: center;
+}
+
+.excel-viewer .row-header {
+    background: #f3f3f3;
+    width: 38px;
+    text-align: center;
+}

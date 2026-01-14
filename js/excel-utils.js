@@ -11,7 +11,7 @@ loadScript("https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js");
 loadScript("https://cdn.jsdelivr.net/npm/date-fns@4.1.0/locale/pt-BR/cdn.min.js");
 loadScript("https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js");
 
-loadStyle("styles/excel-viewer.css");
+loadStyle("css/excel-viewer.css");
 
 /* ==========================================================
    PUBLIC API
