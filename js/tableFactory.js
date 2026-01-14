@@ -2,6 +2,12 @@ import { loadStyle } from "./loader_utils.js";
 
 loadStyle("./css/custom-table.css");
 
+export const ActionResponse = Object.freeze({
+	SUCCESS: 0,
+	FAILED: 1,
+	WAIT_FOR_NEXT_RESPONSE: 3
+});
+
 export class TableFactory {
 
 	editingIndexes = {};
@@ -76,7 +82,7 @@ export class TableFactory {
 				if (isEditing && col.createEditElement) {
 					const element = col.createEditElement(row, v => {
 						if (!this.editBuffer[index]) {
-							this.editBuffer[index] = {};
+							this.editBuffer[index] = structuredClone(row);
 						}
 						this.editBuffer[index][col.key] = v;
 					});
@@ -113,13 +119,20 @@ export class TableFactory {
 								return;
 							}
 						}
-						const updatedRow = {
-							...this.editBuffer[index],
-						};
-						delete this.editingIndexes[index];
-						delete this.editBuffer[index];
+						const updatedRow = structuredClone(this.editBuffer[index]);
+						const result = await this.onEdit(updatedRow, index);
 
-						await this.onEdit(updatedRow, index);
+						switch (result) {
+							case ActionResponse.WAIT_FOR_NEXT_RESPONSE:
+								// Wait for the next response
+								break;
+							case ActionResponse.SUCCESS:
+								this.data[index] = updatedRow;
+							case ActionResponse.FAILED:
+								delete this.editingIndexes[index];
+								delete this.editBuffer[index];
+							break;
+						}
 						this.render();
 					};
 

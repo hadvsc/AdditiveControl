@@ -1,7 +1,7 @@
 import { loadItems, saveItems } from "./storage.js";
-import { TableFactory } from "./tableFactory.js";
+import { ActionResponse, TableFactory } from "./tableFactory.js";
 import { productBadgeClass, productBoxUnits, productUnitMl } from "./product_types.js";
-import { getBatchExpiration, getBatchProduct } from "./batches.js";
+import { batchExists, getBatchExpiration, getBatchProduct } from "./batches.js";
 import { formatMonthYear, formatNumber } from "./utils.js";
 import { showConfirmModal } from "./modal.js";
 
@@ -90,7 +90,17 @@ export function initCountingTab(container) {
 			{
 				key: "batch",
 				label: "Lote",
-				width: "80px"
+				width: "80px",
+				createEditElement: (row, onChange) => {
+					const input = document.createElement("input");
+					input.type = "number";
+					input.value = row.batch;
+					input.required = true;
+
+					input.oninput = e => onChange(e.target.value);
+
+					return input;
+				}
 			},
 			{
 				key: "type",
@@ -139,15 +149,19 @@ export function initCountingTab(container) {
 		],
 		data: items,
 		onEdit: async (updatedRow, index) => {
-			const data = items[index];
-
-			data.quantity.value = updatedRow.quantity.value;
-			data.totalMl = calculateMlByMeasure(
-				getBatchProduct(data.batch),
-				data.quantity.value,
-				data.quantity.measure
+			if (!batchExists(updatedRow.batch)) {
+				await showConfirmModal(`Não existe um lote com o número: ${updatedRow.batch}.`, "Ok", null);
+				return ActionResponse.WAIT_FOR_NEXT_RESPONSE;
+			}
+			updatedRow.totalMl = calculateMlByMeasure(
+				getBatchProduct(updatedRow.batch),
+				updatedRow.quantity.value,
+				updatedRow.quantity.measure
 			);
+			items[index] = updatedRow;
 			saveItems(items);
+
+			return ActionResponse.SUCCESS;
 		},
 		onDelete: async index => {
 			const data = items[index];

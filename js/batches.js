@@ -1,5 +1,5 @@
 import { loadBatches, saveBatches } from "./storage.js";
-import { TableFactory } from "./tableFactory.js";
+import { ActionResponse, TableFactory } from "./tableFactory.js";
 import { productBadgeClass, productTypes } from "./product_types.js";
 import { MonthYearPicker } from "./month_year_picker.js";
 import { formatMonthYear } from "./utils.js";
@@ -102,7 +102,16 @@ export function initBatchesTab(container) {
 			{
 				key: "batch",
 				label: "Lote",
-				width: "100px"
+				width: "100px",
+				createEditElement: (row, onChange) => {
+					const input = document.createElement("input");
+					input.type = "number";
+					input.value = row.batch;
+					input.required = true;
+
+					input.oninput = e => onChange(e.target.value);
+					return input;
+				}
 			},
 			{
 				key: "product",
@@ -146,11 +155,24 @@ export function initBatchesTab(container) {
 		],
 		data,
 		onEdit: async (updatedRow, index) => {
-			const key = data[index].batch;
-			batches[key] = { ...updatedRow };
+			const currentBatch = data[index].batch;
 
+			if (currentBatch !== updatedRow.batch && batchExists(updatedRow.batch)) {
+				const message = `
+					Já existe um lote com essa númeração. Deseja substituir por outro ou cancelar a operação.
+				`;
+				if(!await showConfirmModal(message, "Substituir", "Cancelar")) {
+					return ActionResponse.WAIT_FOR_NEXT_RESPONSE;
+				}
+			}
+			const batchData = structuredClone(updatedRow);
+			// Remove batch number from batch data, since it is used only as an object key and not as a property of the batch data itself.
+			delete batchData.batch;
+
+			batches[updatedRow.batch] = batchData;
 			saveBatches(batches);
-			table.update(batches);
+			
+			return ActionResponse.SUCCESS;
 		},
 		onDelete: async index => {
 			const batch = data[index].batch;
