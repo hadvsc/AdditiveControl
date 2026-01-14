@@ -3,6 +3,7 @@ import { TableFactory } from "./tableFactory.js";
 import { productBadgeClass, productTypes } from "./product_types.js";
 import { MonthYearPicker } from "./month_year_picker.js";
 import { formatMonthYear } from "./utils.js";
+import { showConfirmModal } from "./modal.js";
 
 const batches = loadBatches();
 
@@ -148,17 +149,22 @@ export function initBatchesTab(container) {
 			const key = data[index].batch;
 			batches[key] = { ...updatedRow };
 
-			console.log(batches[key]);
-
 			saveBatches(batches);
 			table.update(batches);
 		},
-		onDelete: index => {
-			const key = data[index].batch;
-			if (!confirm("Excluir lote?")) return;
-			delete batches[key];
-			saveBatches(batches);
-			initBatchesTab(container);
+		onDelete: async index => {
+			const batch = data[index].batch;
+
+			const message = `
+				Você tem certeza que deseja remover esse registro?<br><br>
+				<b>Lote:</b> ${batch}<br>
+			`;
+			if(await showConfirmModal(message, "Remover", "Cancelar")) {
+				removeBatch(batch);
+				delete data[index];
+				
+				table.update(data);
+			}
 		}
 	});
 
