@@ -30,12 +30,12 @@ export function formatMonthYear(value) {
  * @returns {Promise<File>} - Promise that resolves with the loaded file.
  */
 export async function loadLocalFile(path) {
-	const response = await fetch(url);
+	const response = await fetch(path);
 	if (!response.ok) {
 		throw new Error(`Erro ${response.status}: ${response.url}`);
 	}
 	const blob = await response.blob();
-	return new File([blob], "model.xlsx", { type: blob.type });
+	return new File([blob], path.split("/").pop(), { type: blob.type });
 }
 
 /**
