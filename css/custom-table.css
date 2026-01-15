@@ -31,6 +31,7 @@
 	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 	gap: 12px;
 	margin-bottom: 12px;
+	margin-top: 10px;
 }
 
 .form-grid label {
@@ -68,7 +69,7 @@ button:hover {
 	color: #fff;
 }
 
-.btn-danger {
+.btn-delete, .btn-danger {
 	background: #dc2626;
 	color: #fff;
 }
@@ -90,6 +91,11 @@ button:hover {
 
 .btn-cancel {
 	background: #ef4444;
+	color: #fff;
+}
+
+.btn-print {
+	background: #4CAF50;;
 	color: #fff;
 }
 
@@ -115,4 +121,10 @@ button:hover {
 	height: max-content;
 	padding: 8px;
 	border: 1px solid #cbd5f5;
+}
+
+.button-container {
+	display: flex;
+	gap: 8px;
+	justify-content: stretch;
 }

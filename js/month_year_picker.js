@@ -20,6 +20,7 @@ export class MonthYearPicker {
 		this.fp = flatpickr(this.input, {
 			locale: "pt",
 			allowInput: false,
+			disableMobile: true,
 
 			plugins: [
 				new monthSelectPlugin({

@@ -1,0 +1,34 @@
+{
+  "45": {
+    "product": "Gasolina 300ml",
+    "expiration": "04-2028"
+  },
+  "46": {
+    "product": "Gasolina 300ml",
+    "expiration": "07-2028"
+  },
+  "47": {
+    "product": "Gasolina 300ml",
+    "expiration": "08-2028"
+  },
+  "1440": {
+    "product": "Diesel 500ml",
+    "expiration": "05-2028"
+  },
+  "1450": {
+    "product": "Diesel 500ml",
+    "expiration": "07-2028"
+  },
+  "1470": {
+    "product": "Diesel 500ml",
+    "expiration": "10-2028"
+  },
+  "1550": {
+    "product": "Gasolina 500ml",
+    "expiration": "07-2028"
+  },
+  "1580": {
+    "product": "Gasolina 500ml",
+    "expiration": "11-2028"
+  }
+}

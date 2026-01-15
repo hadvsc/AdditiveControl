@@ -1,0 +1,50 @@
+.excel-viewer {
+	overflow-x: auto;
+}
+
+@media (max-width: 930px) {
+	body {
+		zoom: 0.8;
+		padding: 12px;
+	}
+	.tabs {
+		overflow-x: auto;
+		justify-content: flex-start;
+	}
+
+	.tab {
+		white-space: nowrap;
+		flex-shrink: 0;
+		font-size: 20px;
+	}
+	.counting-table th:nth-child(5),
+	.counting-table td:nth-child(5) {
+		display: none;
+	}
+}
+
+@media (max-width: 700px) {
+	.counting-table th:nth-child(3),
+	.counting-table td:nth-child(3) {
+		display: none;
+	}
+	.batches-table th:nth-child(3),
+	.batches-table td:nth-child(3) {
+		width: 90px;
+	}
+}
+
+@media (max-width: 645px) {
+	.btn-edit span,
+	.btn-save span,
+	.btn-cancel span 
+	.btn-delete span {
+		display: none;
+	}
+}
+
+@media (max-width: 500px) {
+	body {
+		zoom: 0.6;
+	}
+}

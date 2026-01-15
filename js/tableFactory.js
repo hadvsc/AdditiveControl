@@ -4,7 +4,8 @@ loadStyle("./css/custom-table.css");
 
 export const ActionResponse = Object.freeze({
 	SUCCESS: 0,
-	FAILED: 1,
+	SUCCESS_NO_CHANGE: 1,
+	FAILED: 2,
 	WAIT_FOR_NEXT_RESPONSE: 3
 });
 
@@ -13,7 +14,7 @@ export class TableFactory {
 	editingIndexes = {};
 	editBuffer = {};
 
-	constructor({ columns, data, onEdit, onDelete, enableActions = true }) {
+	constructor(className, { columns, data, onEdit, onDelete, enableActions = true }) {
 		this.columns = columns;
 		this.data = data;
 		this.onEdit = onEdit;
@@ -21,7 +22,8 @@ export class TableFactory {
 		this.enableActions = enableActions;
 
 		this.table = document.createElement("table");
-		this.table.className = "custom-table";
+		this.table.classList.add("custom-table");
+		this.table.classList.add(className);
 
 		this.render();
 	}
@@ -39,6 +41,7 @@ export class TableFactory {
 		this.columns.forEach(c => {
 			const th = document.createElement("th");
 			th.textContent = c.label;
+			th.classList.add("col-" + c.key);
 			tr.appendChild(th);
 
 			if (c.width) {
@@ -104,10 +107,10 @@ export class TableFactory {
 				const delBtn = document.createElement("button");
 
 				if (isEditing) {
-					editBtn.textContent = "Salvar";
+					editBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i><span> Salvar</span>`;
 					editBtn.className = "btn-save";
 
-					delBtn.textContent = "Cancelar";
+					delBtn.innerHTML = `<i class="fa-solid fa-rotate-left"></i>`;
 					delBtn.className = "btn-cancel";
 
 					editBtn.onclick = async () => {
@@ -120,7 +123,7 @@ export class TableFactory {
 							}
 						}
 						const updatedRow = structuredClone(this.editBuffer[index]);
-						const result = await this.onEdit(updatedRow, index);
+						const result = await this.onEdit(updatedRow, index, row);
 
 						switch (result) {
 							case ActionResponse.WAIT_FOR_NEXT_RESPONSE:
@@ -128,6 +131,7 @@ export class TableFactory {
 								break;
 							case ActionResponse.SUCCESS:
 								this.data[index] = updatedRow;
+							case ActionResponse.SUCCESS_NO_CHANGE:
 							case ActionResponse.FAILED:
 								delete this.editingIndexes[index];
 								delete this.editBuffer[index];
@@ -143,8 +147,8 @@ export class TableFactory {
 						this.render();
 					};
 				} else {
-					editBtn.textContent = "Editar";
 					editBtn.className = "btn-edit";
+					editBtn.innerHTML = `<i class="fa-solid fa-pen-to-square"></i><span> Editar</span>`;
 
 					editBtn.onclick = () => {
 						this.editingIndexes[index] = index;
@@ -152,8 +156,8 @@ export class TableFactory {
 						this.render();
 					};
 
-					delBtn.innerHTML = `<i class="bi bi-trash"></i>`;
-					delBtn.className = "btn-danger";
+					delBtn.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+					delBtn.className = "btn-delete";
 
 					delBtn.onclick = async () => await this.onDelete(index);
 				}
@@ -173,9 +177,6 @@ export class TableFactory {
 
 	update(data) {
 		this.data = data;
-		this.editingIndexes = {};
-		this.editBuffer = {};
-		this.render();
 	}
 
 	getElement() {

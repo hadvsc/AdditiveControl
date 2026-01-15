@@ -1,11 +1,11 @@
-import { initCountingTab } from "./counting.js";
-import { initBatchesTab } from "./batches.js";
-import { initSpreadsheetTab } from "./spreadsheet.js";
+import { CountingLoader } from "./counting.js";
+import { BatchesLoader } from "./batches.js";
+import { SpreadsheetLoader } from "./spreadsheet.js";
 
 export const TABS = [
-	{ id: "counting", label: "Contagem", loader: initCountingTab },
-	{ id: "batches", label: "Registro de Lotes", loader: initBatchesTab },
-	{ id: "spreadsheet", label: "Planilha", loader: initSpreadsheetTab }
+	{ id: "counting", label: "Contagem", loader: new CountingLoader() },
+	{ id: "batches", label: "Registro de Lotes", loader: new BatchesLoader() },
+	{ id: "spreadsheet", label: "Planilha", loader: new SpreadsheetLoader() },
 ];
 
 const tabsContainer = document.querySelector(".tabs");
@@ -13,21 +13,27 @@ const content = document.getElementById("tab-content");
 
 let activeTab = null;
 
-function renderTabs() {
+async function renderTabs() {
 	tabsContainer.innerHTML = "";
 
-	TABS.forEach(tab => {
+	for (const tab of TABS) {
+		await tab.loader.load();
+
 		const btn = document.createElement("button");
 		btn.className = "tab";
 		btn.textContent = tab.label;
 
-		btn.onclick = async () => await openTab(tab);
+		btn.onclick = async () => await openTab(tab.id);
 		tabsContainer.appendChild(btn);
-	});
+	}
 }
 
-async function openTab(tab) {
-	if (activeTab === tab.id) return;
+export async function openTab(tabId) {
+	if (activeTab === tabId) return;
+
+	const tab = TABS.find(t => t.id === tabId);
+
+	if (!tab) return;
 
 	activeTab = tab.id;
 	content.innerHTML = "";
@@ -36,10 +42,10 @@ async function openTab(tab) {
 		b.classList.toggle("active", b.textContent === tab.label)
 	);
 
-	await tab.loader(content);
+	await tab.loader.initTab(content);
 }
 
-export function initTabs() {
-	renderTabs();
-	openTab(TABS[0]);
+export async function initTabs() {
+	await renderTabs();
+	await openTab(TABS[0].id);
 }

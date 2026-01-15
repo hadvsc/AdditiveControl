@@ -1,5 +1,5 @@
 import { initTabs } from "./tabs.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-	initTabs();
+document.addEventListener("DOMContentLoaded", async () => {
+	await initTabs();
 });

@@ -1,11 +1,19 @@
 import { getBatchExpiration, getBatchProduct } from "./batches.js";
+import { getItems } from "./counting.js";
 import { downloadExcelFile, editExcelFile, renderSheet } from "./excel-utils.js";
 import { productCellColumn } from "./product_types.js";
-import { loadItems } from "./storage.js";
 import { loadLocalFile } from "./utils.js";
 
+export class SpreadsheetLoader {
+	async load() {}
+
+	async initTab(container) {
+		await initSpreadsheetTab(container);
+	}
+}
+
 export async function initSpreadsheetTab(container) {
-	const items = loadItems();
+	const items = getItems();
 	const box = document.createElement("div");
 	box.className = "box";
 
