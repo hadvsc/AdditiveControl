@@ -1,3 +1,5 @@
+/** @import flatpickr from "flatpickr"; */
+
 export class MonthYearPicker {
 	/**
 	 * Constructor for MonthYearPicker.
@@ -19,7 +21,7 @@ export class MonthYearPicker {
 	init() {
 		this.fp = flatpickr(this.input, {
 			locale: "pt",
-			allowInput: false,
+			allowInput: true,
 			disableMobile: true,
 
 			plugins: [
