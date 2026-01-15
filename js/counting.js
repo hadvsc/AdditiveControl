@@ -155,7 +155,7 @@ function parseMeasureInput(text) {
 			return { value, measure };
 		}
 	}
-	throw new Error("Unidade medida '${inputUnit}' inválida.");
+	throw new Error(`Unidade medida '${inputUnit}' inválida.`);
 }
 
 export async function initCountingTab(container) {

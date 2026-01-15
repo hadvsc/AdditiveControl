@@ -80,6 +80,11 @@ function createForm(onSubmit) {
 		e.preventDefault();
 		const batchNumber = form.querySelector("#batchInput").value;
 		const product = form.querySelector("#productInput").value;
+		
+		if(expirationPicker.getValue() === "") {
+			alert("Preencha a data de validade");
+			return;
+		}
 
 		if (batchExists(batchNumber)) {
 			if (!await showConfirmModal(`Já existe um lote com o número <bold>${batchNumber}</bold>, Deseja substituir os dados?`, "Substituir", "Cancelar")) {
