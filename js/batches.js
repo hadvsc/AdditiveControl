@@ -287,7 +287,7 @@ export async function initBatchesTab(container) {
 	buttonClear.onclick = async () => {
 		if (await showConfirmModal("Tem certeza que deseja limpar os lotes?")) {
 			batches = {};
-			// saveBatches(batches);
+			saveBatches(batches);
 			table.update([]);
 			table.render();
 		}

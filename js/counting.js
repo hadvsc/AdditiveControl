@@ -295,8 +295,9 @@ export async function initCountingTab(container) {
 	buttonClear.onclick = async () => {
 		if (await showConfirmModal("Tem certeza que deseja limpar a contagem de aditivos?")) {
 			items = [];
-			// saveItems(items);
+			saveItems(items);
 			countingTable.update(items);
+			countingTable.render();
 		}
 	};
 
