@@ -8,6 +8,24 @@ export function productTypes() {
 	return Object.keys(PRODUCT_TYPES);
 }
 
+export function getProductsWithTypes() {
+	const map = {};
+
+	for (const key of Object.keys(PRODUCT_TYPES)) {
+		const product = key.split(" ")[0];
+
+		if (!map[product]) {
+			map[product] = {
+				product,
+				types: []
+			};
+		}
+		map[product].types.push(key);
+	}
+
+	return Object.values(map);
+}
+
 /**
  * Returns the unit volume in milliliters (mL) for a given product type.
  * If the product type is not found, returns 0.

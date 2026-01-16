@@ -77,6 +77,9 @@ export class TableFactory {
 			this.columns.forEach(col => {
 				const td = document.createElement("td");
 
+				if(col.textAlign) {
+					td.style.textAlign = col.textAlign;
+				}
 				let value = row[col.key] ?? "";
 
 				if(col.render) {

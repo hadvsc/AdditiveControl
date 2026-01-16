@@ -35,6 +35,16 @@ h1 {
 	padding: 16px;
 	border-radius: 10px;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, .08);
+	margin: 10px auto;
+	max-width: 1580px;
+}
+
+.grid-items {
+	display: flex;
+  	gap: 10px;
+	margin: 10px auto;
+	max-width: 1580px;
+  	justify-content: center; /* eixo horizontal */
 }
 
 /* Modal */
