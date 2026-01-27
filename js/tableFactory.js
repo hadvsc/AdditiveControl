@@ -74,6 +74,34 @@ export class TableFactory {
 
 			if (!canBeRendered) return;
 
+			const processEdit = async () => {
+				/** @type {NodeListOf<HTMLInputElement>} */
+				const inputs = tr.querySelectorAll(".edit-input");
+
+				for (const input of inputs) {
+					if (!input.checkValidity()) {
+						input.reportValidity();
+						return;
+					}
+				}
+				const updatedRow = structuredClone(this.editBuffer[index]);
+				const result = await this.onEdit(updatedRow, index, row);
+
+				switch (result) {
+					case ActionResponse.WAIT_FOR_NEXT_RESPONSE:
+						// Wait for the next response
+						break;
+					case ActionResponse.SUCCESS:
+						this.data[index] = updatedRow;
+					case ActionResponse.SUCCESS_NO_CHANGE:
+					case ActionResponse.FAILED:
+						delete this.editingIndexes[index];
+						delete this.editBuffer[index];
+					break;
+				}
+				this.render();
+			};
+
 			this.columns.forEach(col => {
 				const td = document.createElement("td");
 
@@ -86,11 +114,33 @@ export class TableFactory {
 					value = col.render(value, row);
 				}
 				if (isEditing && col.createEditElement) {
+					/** @type {HTMLInputElement|HTMLSelectElement} */
 					const element = col.createEditElement(row, v => {
 						if (!this.editBuffer[index]) {
 							this.editBuffer[index] = structuredClone(row);
 						}
 						this.editBuffer[index][col.key] = v;
+					});
+
+					element.addEventListener("keydown", async (/** @type {KeyboardEvent} */ e) => {
+						if (e.key !== "Enter") {
+							return;
+						}
+						e.preventDefault();
+
+						/** @type {(HTMLInputElement|HTMLSelectElement)[]} */
+						const inputs = Array.from(tr.querySelectorAll(".edit-input"));
+						const nextInput = inputs[inputs.indexOf(element) + 1];
+
+						if (!nextInput) {
+							await processEdit();
+							return;
+						}
+						nextInput.focus();
+							
+						if (nextInput instanceof HTMLInputElement) {
+							nextInput.select();
+						}
 					});
 
 					element.classList.add("edit-input");
@@ -116,32 +166,7 @@ export class TableFactory {
 					delBtn.innerHTML = `<i class="fa-solid fa-rotate-left"></i>`;
 					delBtn.className = "btn-cancel";
 
-					editBtn.onclick = async () => {
-						const inputs = tr.querySelectorAll(".edit-input");
-
-						for (const input of inputs) {
-							if (!input.checkValidity()) {
-								input.reportValidity();
-								return;
-							}
-						}
-						const updatedRow = structuredClone(this.editBuffer[index]);
-						const result = await this.onEdit(updatedRow, index, row);
-
-						switch (result) {
-							case ActionResponse.WAIT_FOR_NEXT_RESPONSE:
-								// Wait for the next response
-								break;
-							case ActionResponse.SUCCESS:
-								this.data[index] = updatedRow;
-							case ActionResponse.SUCCESS_NO_CHANGE:
-							case ActionResponse.FAILED:
-								delete this.editingIndexes[index];
-								delete this.editBuffer[index];
-							break;
-						}
-						this.render();
-					};
+					editBtn.onclick = async () => await processEdit();
 
 					delBtn.onclick = () => {
 						delete this.editingIndexes[index];
