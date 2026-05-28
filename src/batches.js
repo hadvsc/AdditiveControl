@@ -19,7 +19,7 @@ export class BatchesLoader {
 }
 
 export async function onLoad() {
-	batches = await loadBatches("docs/default_batches.json");
+	batches = await loadBatches("/batches.json");
 }
 
 export function batchExists(batch) {

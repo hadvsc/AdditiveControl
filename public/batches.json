@@ -1,4 +1,8 @@
 {
+  "1": {
+    "product": "Diesel 300ml",
+    "expiration": "09-2026"
+  },
   "45": {
     "product": "Gasolina 300ml",
     "expiration": "04-2028"
@@ -18,6 +22,18 @@
   "80": {
     "product": "Gasolina 300ml",
     "expiration": "03-2029"
+  },
+  "1250": {
+    "product": "Diesel 500ml",
+    "expiration": "10-2026"
+  },
+  "1310": {
+    "product": "Diesel 500ml",
+    "expiration": "04-2027"
+  },
+  "1340": {
+    "product": "Diesel 500ml",
+    "expiration": "06-2027"
   },
   "1440": {
     "product": "Diesel 500ml",

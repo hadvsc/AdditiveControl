@@ -1,17 +1,8 @@
-/**
- * @import ExcelJS from "exceljs";
- * @import dateFns from "date-fns";
- * @import HyperFormula from "hyperformula";
- */
-
-import { loadScript, loadStyle } from "./loader_utils.js";
-
-loadScript("https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js");
-loadScript("https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js");
-loadScript("https://cdn.jsdelivr.net/npm/date-fns@4.1.0/locale/pt-BR/cdn.min.js");
-loadScript("https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js");
-
-loadStyle("css/excel-viewer.css");
+import "./css/excel-viewer.css";
+import ExcelJS from "exceljs";
+import { format as dateFnsFormat } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import HyperFormula from "hyperformula";
 
 /* ==========================================================
    PUBLIC API
@@ -443,7 +434,7 @@ function __formatValue(cell) {
 
 	if (cell.value instanceof Date) {
 		return fmt
-			? dateFns.format(cell.value, __excelFmtToDateFns(fmt), { locale: dateFns.locale.ptBR })
+			? dateFnsFormat(cell.value, __excelFmtToDateFns(fmt), { locale: ptBR })
 			: cell.value.toLocaleString("pt-BR");
 	}
 
@@ -451,10 +442,10 @@ function __formatValue(cell) {
 		const r = cell.value.result;
 		if (!r) return "";
 		if (fmt && __isDateLike(r)) {
-			return dateFns.format(
+			return dateFnsFormat(
 				new Date(r),
 				__excelFmtToDateFns(fmt),
-				{ locale: window.dateFnsLocalePtBR }
+				{ locale: ptBR }
 			);
 		}
 		return String(r);

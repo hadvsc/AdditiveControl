@@ -93,7 +93,7 @@ function createForm(onSubmit) {
 
 		<div>
 			<label for="quantity">Quantidade:</label>
-			<input type="number" name="quantity" placeholder="Quantidade" required>
+			<input type="number" name="quantity" placeholder="Quantidade" min="1" value="1" required>
 		</div>
 
 		<div style="align-self:end;">
@@ -125,37 +125,6 @@ function createForm(onSubmit) {
 	};
 
 	return form;
-}
-
-function parseMeasureInput(text) {
-	const match = text
-		.trim()
-		.match(/^(\d+(?:[.,]\d+)?)(?:\s*([a-zç]+))?$/i);
-
-	if (!match) {
-		throw new Error("Digite um número, com unidade opcional. Ex: 1, 1 unidade, 2 caixa.");
-	}
-	const value = Number(match[1].replace(",", "."));
-
-	if (isNaN(value)) {
-		throw new Error("Número inválido.");
-	}
-
-	if (!match[2]) {
-		return { value, measure: null };
-	}
-
-	const inputUnit = match[2].toLowerCase();
-
-	for (const [measure, { aliases }] of Object.entries(UNIT_MEASURES)) {
-		const singular = measure.toLowerCase();
-		const plural = singular + "s";
-
-		if (inputUnit === singular || inputUnit === plural || aliases.includes(inputUnit)) {
-			return { value, measure };
-		}
-	}
-	throw new Error(`Unidade medida '${inputUnit}' inválida.`);
 }
 
 export async function initCountingTab(container) {
@@ -207,35 +176,36 @@ export async function initCountingTab(container) {
 				label: "Quantidade",
 				render: v => v.value + " " + v.measure + (v.value > 1 ? "s" : ""),
 				createEditElement: (row, onChange) => {
-					const input = document.createElement("input");
-					input.type = "text";
-					input.value = row.quantity.value + " " + row.quantity.measure + (row.quantity.value > 1 ? "s" : "");
-					input.required = true;
+					const panel = document.createElement("div");
+					panel.className = "form-grid";
+					panel.style.display = "flex";
 
+					panel.innerHTML = `
+						<input type="number" name="quantity" placeholder="Quantidade" min="1" required>
+						<select name="measure" required>
+							${unitMeasures().map(measure => `<option>${measure}</option>`).join("")}
+						</select>
+					`;
+
+					const input = panel.querySelector("input[name=quantity]");
+					const measureSelect = panel.querySelector("select[name=measure]");
+
+					input.value = row.quantity.value;
+					measureSelect.value = row.quantity.measure;
 
 					input.oninput = e => {
-						e.target.setCustomValidity("");
-						e.target.classList.remove("invalid");
-						let parsed;
-
-						try {
-							parsed = parseMeasureInput(e.target.value);
-						} catch (error) {
-							if (error.message) {
-								e.target.setCustomValidity(error.message);
-								e.target.classList.add("invalid");
-							}
-						}
-
-						if(parsed) {
-							onChange({
-								value: parsed.value,
-								measure: parsed.measure ?? row.quantity.measure
-							});
-						}
+						onChange({
+							value: e.target.value,
+							measure: measureSelect.value
+						});
 					};
-
-					return input;
+					measureSelect.onchange = e => {
+						onChange({
+							value: input.value,
+							measure: e.target.value
+						});
+					};
+					return panel;
 				}
 			},
 			{
@@ -305,8 +275,7 @@ export async function initCountingTab(container) {
 	buttonPrint.textContent = "Imprimir Folha de Contagem";
 	buttonPrint.className = "btn-print";
 	buttonPrint.onclick = () => {
-		const pdfPath = "docs/folha_contagem.pdf";
-		const printWindow = window.open(pdfPath);
+		const printWindow = window.open("/folha_contagem.pdf", "_blank", "width=800,height=600");
 
 		printWindow.addEventListener("load", () => {
 			printWindow.focus();

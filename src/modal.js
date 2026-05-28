@@ -1,4 +1,8 @@
-const modal = document.getElementById("confirmModal");
+const modal = document.createElement("div");
+modal.id = "confirmModal";
+modal.className = "modal";
+
+document.body.appendChild(modal);
 
 
 /**

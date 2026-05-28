@@ -1,5 +1,6 @@
 export const PRODUCT_TYPES = {
 	"Diesel 500ml": { box_units: 20, unit_ml: 500, badge: "badge-product-diesel", cellColumn: "F" },
+	"Diesel 300ml": { box_units: 30, unit_ml: 300, badge: "badge-product-diesel", cellColumn: "E" },
 	"Gasolina 500ml": { box_units: 20, unit_ml: 500, badge: "badge-product-gasoline", cellColumn: "H" },
 	"Gasolina 300ml": { box_units: 30, unit_ml: 300, badge: "badge-product-gasoline", cellColumn: "G" }
 };

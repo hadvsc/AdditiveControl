@@ -1,4 +1,8 @@
-/** @import flatpickr from "flatpickr"; */
+import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/plugins/monthSelect/style.css";
+import flatpickr from "flatpickr";
+import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect/index";
+import { Portuguese } from "flatpickr/dist/l10n/pt";
 
 export class MonthYearPicker {
 	/**
@@ -20,7 +24,7 @@ export class MonthYearPicker {
 
 	init() {
 		this.fp = flatpickr(this.input, {
-			locale: "pt",
+			locale: Portuguese,
 			allowInput: true,
 			disableMobile: true,
 

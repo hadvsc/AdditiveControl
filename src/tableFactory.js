@@ -1,6 +1,4 @@
-import { loadStyle } from "./loader_utils.js";
-
-loadStyle("./css/custom-table.css");
+import "./css/custom-table.css";
 
 export const ActionResponse = Object.freeze({
 	SUCCESS: 0,
@@ -114,7 +112,6 @@ export class TableFactory {
 					value = col.render(value, row);
 				}
 				if (isEditing && col.createEditElement) {
-					/** @type {HTMLInputElement|HTMLSelectElement} */
 					const element = col.createEditElement(row, v => {
 						if (!this.editBuffer[index]) {
 							this.editBuffer[index] = structuredClone(row);
@@ -122,28 +119,30 @@ export class TableFactory {
 						this.editBuffer[index][col.key] = v;
 					});
 
-					element.addEventListener("keydown", async (/** @type {KeyboardEvent} */ e) => {
-						if (e.key !== "Enter") {
-							return;
-						}
-						e.preventDefault();
+					if (element instanceof HTMLInputElement || element instanceof HTMLSelectElement) {
+						element.addEventListener("keydown", async (/** @type {KeyboardEvent} */ e) => {
+							if (e.key !== "Enter") {
+								return;
+							}
+							e.preventDefault();
 
-						/** @type {(HTMLInputElement|HTMLSelectElement)[]} */
-						const inputs = Array.from(tr.querySelectorAll(".edit-input"));
-						const nextInput = inputs[inputs.indexOf(element) + 1];
+							/** @type {(HTMLInputElement|HTMLSelectElement)[]} */
+							const inputs = Array.from(tr.querySelectorAll(".edit-input"));
+							const nextInput = inputs[inputs.indexOf(element) + 1];
 
-						if (!nextInput) {
-							await processEdit();
-							return;
-						}
-						nextInput.focus();
-							
-						if (nextInput instanceof HTMLInputElement) {
-							nextInput.select();
-						}
-					});
+							if (!nextInput) {
+								await processEdit();
+								return;
+							}
+							nextInput.focus();
+								
+							if (nextInput instanceof HTMLInputElement) {
+								nextInput.select();
+							}
+						});
 
-					element.classList.add("edit-input");
+						element.classList.add("edit-input");	
+					}
 					td.appendChild(element);
 				} else {
 					td.innerHTML = value;
