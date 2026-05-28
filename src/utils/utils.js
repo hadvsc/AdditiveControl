@@ -8,6 +8,10 @@ export function formatNumber(value) {
 	return formatter.format(value);
 }
 
+export function asset(path) {
+  return `${import.meta.env.BASE_URL}${path}`;
+}
+
 export function formatMonthYear(value) {
 	const [month, year] = value.split("-");
 	const date = new Date(year, month - 1);

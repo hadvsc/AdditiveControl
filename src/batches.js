@@ -2,7 +2,7 @@ import { loadBatches, saveBatches } from "./storage.js";
 import { ActionResponse, TableFactory } from "./tableFactory.js";
 import { productBadgeClass, productTypes } from "./product_types.js";
 import { MonthYearPicker } from "./month_year_picker.js";
-import { formatMonthYear } from "./utils.js";
+import { asset, formatMonthYear } from "./utils/utils.js";
 import { showConfirmModal } from "./modal.js";
 import { getItems, getItemsByBatch, removeItem, setItem } from "./counting.js";
 
@@ -19,7 +19,7 @@ export class BatchesLoader {
 }
 
 export async function onLoad() {
-	batches = await loadBatches("/batches.json");
+	batches = await loadBatches(asset("/batches.json"));
 }
 
 export function batchExists(batch) {

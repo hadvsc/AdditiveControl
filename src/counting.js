@@ -2,7 +2,7 @@ import { loadItems, saveItems } from "./storage.js";
 import { ActionResponse, TableFactory } from "./tableFactory.js";
 import { productBadgeClass, productBoxUnits, productUnitMl } from "./product_types.js";
 import { batchExists, getBatchExpiration, getBatchProduct } from "./batches.js";
-import { formatMonthYear, formatNumber } from "./utils.js";
+import { asset, formatMonthYear, formatNumber } from "./utils/utils.js";
 import { showConfirmModal } from "./modal.js";
 import { openTab } from "./tabs.js";
 
@@ -275,7 +275,7 @@ export async function initCountingTab(container) {
 	buttonPrint.textContent = "Imprimir Folha de Contagem";
 	buttonPrint.className = "btn-print";
 	buttonPrint.onclick = () => {
-		const printWindow = window.open("/folha_contagem.pdf", "_blank", "width=800,height=600");
+		const printWindow = window.open(asset("/folha_contagem.pdf"), "_blank", "width=800,height=600");
 
 		printWindow.addEventListener("load", () => {
 			printWindow.focus();

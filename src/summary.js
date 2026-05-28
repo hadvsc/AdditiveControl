@@ -2,7 +2,7 @@ import { getBatchExpiration, getBatchProduct } from "./batches.js";
 import { getItems } from "./counting.js";
 import { getProductsWithTypes, productBadgeClass, productTypes } from "./product_types.js";
 import { TableFactory } from "./tableFactory.js";
-import { formatMonthYear, formatNumber } from "./utils.js";
+import { formatMonthYear, formatNumber } from "./utils/utils.js";
 
 export class SummaryLoader {
 	async load() {
