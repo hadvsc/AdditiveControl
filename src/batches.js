@@ -286,14 +286,20 @@ export async function initBatchesTab(container) {
 	});
 
 	const buttonClear = document.createElement("button");
-	buttonClear.textContent = "Limpar Lotes";
+	buttonClear.textContent = "Redefinir Lotes";
 	buttonClear.className = "btn-danger";
 
 	buttonClear.onclick = async () => {
-		if (await showConfirmModal("Tem certeza que deseja limpar os lotes?")) {
-			batches = {};
+		if (await showConfirmModal("Tem certeza que deseja redefinir os lotes?\nIsso irá restaurar todos os lotes para os valores padrão.", "Redefinir", "Cancelar")) {
+			batches = await fetch(asset("/batches.json"));
+			batches = await batches.json();
+
 			saveBatches(batches);
-			table.update([]);
+			table.update(Object.entries(batches).map(([batch, info]) => ({
+				batch: batch,
+				product: info.product,
+				expiration: info.expiration
+			})));
 			table.render();
 		}
 	}
