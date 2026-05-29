@@ -1,7 +1,7 @@
-import { CountingLoader } from "./counting.js";
-import { BatchesLoader } from "./batches.js";
-import { SpreadsheetLoader } from "./spreadsheet.js";
-import { SummaryLoader } from "./summary.js";
+import { CountingLoader } from "./tabs/counting.js";
+import { BatchesLoader } from "./tabs/batches.js";
+import { SpreadsheetLoader } from "./tabs/spreadsheet.js";
+import { SummaryLoader } from "./tabs/summary.js";
 
 export const TABS = [
 	{ id: "counting", label: "Contagem", loader: new CountingLoader() },

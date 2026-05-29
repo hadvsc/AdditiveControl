@@ -1,9 +1,9 @@
-import { loadBatches, saveBatches } from "./storage.js";
-import { ActionResponse, TableFactory } from "./tableFactory.js";
-import { productBadgeClass, productTypes } from "./product_types.js";
-import { MonthYearPicker } from "./month_year_picker.js";
-import { asset, formatMonthYear } from "./utils/utils.js";
-import { showConfirmModal } from "./modal.js";
+import { loadBatches, saveBatches } from "../storage.js";
+import { ActionResponse, TableFactory } from "../tableFactory.js";
+import { productBadgeClass, productTypes } from "../product_types.js";
+import { MonthYearPicker } from "../month_year_picker.js";
+import { asset, formatMonthYear } from "../utils/utils.js";
+import { showConfirmModal } from "../modal.js";
 import { getItems, getItemsByBatch, removeItem, setItem } from "./counting.js";
 
 let batches;

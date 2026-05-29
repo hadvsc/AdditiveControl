@@ -1,8 +1,8 @@
 import { getBatchExpiration, getBatchProduct } from "./batches.js";
 import { getItems } from "./counting.js";
-import { downloadExcelFile, editExcelFile, renderSheet } from "./excel-utils.js";
-import { productCellColumn } from "./product_types.js";
-import { loadLocalFile } from "./utils/utils.js";
+import { downloadExcelFile, editExcelFile, renderSheet } from "../excel-utils.js";
+import { productCellColumn } from "../product_types.js";
+import { loadLocalFile } from "../utils/utils.js";
 
 export class SpreadsheetLoader {
 	async load() {}

@@ -1,10 +1,10 @@
-import { loadItems, saveItems } from "./storage.js";
-import { ActionResponse, TableFactory } from "./tableFactory.js";
-import { productBadgeClass, productBoxUnits, productUnitMl } from "./product_types.js";
+import { loadItems, saveItems } from "../storage.js";
+import { ActionResponse, TableFactory } from "../tableFactory.js";
+import { productBadgeClass, productBoxUnits, productUnitMl } from "../product_types.js";
 import { batchExists, getBatchExpiration, getBatchProduct } from "./batches.js";
-import { asset, formatMonthYear, formatNumber } from "./utils/utils.js";
-import { showConfirmModal } from "./modal.js";
-import { openTab } from "./tabs.js";
+import { asset, formatMonthYear, formatNumber } from "../utils/utils.js";
+import { showConfirmModal } from "../modal.js";
+import { openTab } from "../tabs.js";
 
 let items;
 let countingTable;
@@ -81,19 +81,19 @@ function createForm(onSubmit) {
 	form.innerHTML = `
 		<div>
 			<label for="batch">Lote:</label>
-			<input type="number" name="batch" placeholder="Lote" required>
+			<input type="number" name="batch" id="batch" placeholder="Lote" required>
 		</div>
 
 		<div>
 			<label for="measure">Unidade de Medida:</label>
-			<select name="measure" required>
+			<select name="measure" id="measure" required>
 				${unitMeasures().map(measure => `<option>${measure}</option>`).join("")}
 			</select>
 		</div>
 
 		<div>
 			<label for="quantity">Quantidade:</label>
-			<input type="number" name="quantity" placeholder="Quantidade" min="1" value="1" required>
+			<input type="number" name="quantity" id="quantity" placeholder="Quantidade" min="1" value="1" required>
 		</div>
 
 		<div style="align-self:end;">
