@@ -112,14 +112,15 @@ export class TableFactory {
 					value = col.render(value, row);
 				}
 				if (isEditing && col.createEditElement) {
-					const element = col.createEditElement(row, v => {
-						if (!this.editBuffer[index]) {
-							this.editBuffer[index] = structuredClone(row);
+					const processElement = async (element) => {
+						if (element instanceof HTMLDivElement) {
+							Array.from(element.children).forEach(e => processElement(e));
+							return;
 						}
-						this.editBuffer[index][col.key] = v;
-					});
+						if (!element instanceof HTMLInputElement && !element instanceof HTMLSelectElement) {
+							return;
+						}
 
-					if (element instanceof HTMLInputElement || element instanceof HTMLSelectElement) {
 						element.addEventListener("keydown", async (/** @type {KeyboardEvent} */ e) => {
 							if (e.key !== "Enter") {
 								return;
@@ -140,9 +141,16 @@ export class TableFactory {
 								nextInput.select();
 							}
 						});
-
 						element.classList.add("edit-input");	
-					}
+					};
+					const element = col.createEditElement(row, v => {
+						if (!this.editBuffer[index]) {
+							this.editBuffer[index] = structuredClone(row);
+						}
+						this.editBuffer[index][col.key] = v;
+					});
+					processElement(element);
+					
 					td.appendChild(element);
 				} else {
 					td.innerHTML = value;
